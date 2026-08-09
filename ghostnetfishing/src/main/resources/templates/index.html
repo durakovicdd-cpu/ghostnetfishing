@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ghost Net Fishing - Übersicht</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+        h1, h2 { color: #0056b3; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .btn { padding: 6px 12px; margin-right: 5px; cursor: pointer; border: none; border-radius: 4px; color: white; }
+        .btn-green { background-color: #28a745; }
+        .btn-orange { background-color: #fd7e14; }
+        .btn-gray { background-color: #6c757d; }
+        form { display: inline; }
+        .box { background: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #eee; }
+    </style>
+</head>
+<body>
+
+<h1>Ghost Net Fishing App</h1>
+<a href="/melden" style="display: inline-block; margin-bottom: 20px; font-weight: bold;">+ Neues Geisternetz melden</a>
+
+<!-- User Story 3: Zu bergende Netze anzeigen -->
+<h2>Offene Geisternetze (Noch zu bergen)</h2>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Standort (GPS)</th>
+        <th>Größe</th>
+        <th>Status</th>
+        <th>Aktion (Bergung eintragen)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="net : ${offeneNetze}">
+        <td th:text="${net.id}">1</td>
+        <td th:text="${net.standort}">54.123, 10.456</td>
+        <td th:text="${net.groesse}">5m x 10m</td>
+        <td th:text="${net.status}">GEMELDET</td>
+        <td>
+            <!-- User Story 2: Für Bergung eintragen -->
+            <form th:action="@{/bergung/{id}(id=${net.id})}" method="post">
+                <input type="text" name="name" placeholder="Dein Name" required>
+                <input type="text" name="telefonnummer" placeholder="Telefonnummer" required>
+                <button type="submit" class="btn btn-orange">Für Bergung eintragen</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<hr>
+
+<!-- Gesamtübersicht inkl. Verschollen / Geborgen -->
+<h2>Gesamtübersicht aller gemeldeten Netze</h2>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Standort</th>
+        <th>Größe</th>
+        <th>Status</th>
+        <th>Bergende Person</th>
+        <th>Status ändern</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="net : ${alleNetze}">
+        <td th:text="${net.id}">1</td>
+        <td th:text="${net.standort}">54.123, 10.456</td>
+        <td th:text="${net.groesse}">5m x 10m</td>
+        <td th:text="${net.status}">GEMELDET</td>
+        <td th:text="${net.bergendePerson != null ? net.bergendePerson.name + ' (' + net.bergendePerson.telefonnummer + ')' : 'Keine'}">Keine</td>
+        <td>
+            <!-- User Story 4: Als geborgen melden -->
+            <form th:action="@{/geborgen/{id}(id=${net.id})}" method="post">
+                <button type="submit" class="btn btn-green">Als geborgen melden</button>
+            </form>
+
+            <!-- User Story 7: Als verschollen melden -->
+            <form th:action="@{/verschollen/{id}(id=${net.id})}" method="post">
+                <button type="submit" class="btn btn-gray">Als verschollen melden</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

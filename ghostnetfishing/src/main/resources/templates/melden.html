@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Geisternetz melden</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; }
+        input[type="text"] { width: 300px; padding: 8px; margin-top: 5px; }
+        .btn { padding: 8px 16px; background-color: #0056b3; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<h1>Neues Geisternetz melden (User Story 1)</h1>
+
+<form th:action="@{/melden}" th:object="${ghostNet}" method="post">
+    <div class="form-group">
+        <label for="standort">Standort (GPS-Koordinaten / Beschreibung):</label>
+        <input type="text" id="standort" th:field="*{standort}" placeholder="z.B. 54.321, 10.123" required>
+    </div>
+
+    <div class="form-group">
+        <label for="groesse">Geschätzte Größe:</label>
+        <input type="text" id="groesse" th:field="*{groesse}" placeholder="z.B. ca. 15m x 5m" required>
+    </div>
+
+    <button type="submit" class="btn">Geisternetz eintragen</button>
+</form>
+
+<br>
+<a href="/">Zurück zur Startseite</a>
+
+</body>
+</html>
