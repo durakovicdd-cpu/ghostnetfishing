@@ -1,8 +1,11 @@
 package de.iu.ghostnetfishing;
 
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
@@ -68,15 +71,41 @@ public class GhostNetController {
         return "redirect:/";
     }
 
-    // 5. Netz als verschollen melden (User Story 7)
-    @PostMapping("/verschollen/{id}")
-    public String alsVerschollenMelden(@PathVariable Long id) {
-        Optional<GhostNet> optionalNet = ghostNetRepository.findById(id);
+    // 5. Formular für die Verschollen-Meldung anzeigen (User Story 7 mit Kontaktdaten-Pflicht)
+    @GetMapping("/ghostnets/{id}/report-missing")
+    public String showReportMissingForm(@PathVariable("id") Long id, Model model) {
+        MissingReportForm form = new MissingReportForm();
+        form.setNetId(id);
+        model.addAttribute("missingForm", form);
+        return "missing-form";
+    }
+
+    // 6. Verschollen-Meldung verarbeiten
+    @PostMapping("/ghostnets/report-missing")
+    public String processReportMissing(
+            @Valid @ModelAttribute("missingForm") MissingReportForm form,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            return "missing-form";
+        }
+
+        Optional<GhostNet> optionalNet = ghostNetRepository.findById(form.getNetId());
         if (optionalNet.isPresent()) {
             GhostNet net = optionalNet.get();
+
+            // Meldende Person mit Pflichtangaben speichern
+            Person reporter = new Person(form.getReporterName(), form.getReporterPhone());
+            personRepository.save(reporter);
+
+            // Status aktualisieren
             net.setStatus(Status.VERSCHOLLEN);
             ghostNetRepository.save(net);
+
+            redirectAttributes.addFlashAttribute("successMessage", "Netz wurde erfolgreich als verschollen gemeldet.");
         }
+
         return "redirect:/";
     }
 }

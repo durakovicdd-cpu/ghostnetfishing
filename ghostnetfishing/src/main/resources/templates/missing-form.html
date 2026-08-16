@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Netz als verschollen melden</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"] { width: 300px; padding: 8px; box-sizing: border-box; }
+        .error { color: red; font-size: 0.9em; margin-top: 5px; }
+        .btn { padding: 8px 15px; background-color: #d9534f; color: white; border: none; cursor: pointer; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<h2>Geisternetz als verschollen melden</h2>
+
+<form th:action="@{/ghostnets/report-missing}" th:object="${missingForm}" method="post">
+    <input type="hidden" th:field="*{netId}" />
+
+    <div class="form-group">
+        <label for="reporterName">Ihr Name (Pflichtfeld):</label>
+        <input type="text" id="reporterName" th:field="*{reporterName}" required />
+        <div class="error" th:if="${#fields.hasErrors('reporterName')}" th:errors="*{reporterName}"></div>
+    </div>
+
+    <div class="form-group">
+        <label for="reporterPhone">Ihre Telefonnummer (Pflichtfeld):</label>
+        <input type="text" id="reporterPhone" th:field="*{reporterPhone}" required />
+        <div class="error" th:if="${#fields.hasErrors('reporterPhone')}" th:errors="*{reporterPhone}"></div>
+    </div>
+
+    <button type="submit" class="btn">Verbindlich als verschollen melden</button>
+</form>
+
+<br>
+<a href="/">Zurück zur Übersicht</a>
+
+</body>
+</html>
