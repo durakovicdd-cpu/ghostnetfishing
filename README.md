@@ -29,8 +29,8 @@ Im ersten Sprint wurden die folgenden fünf User Stories aus dem Product Backlog
 * `src/main/resources/templates/`: HTML-Views (`index.html`, `melden.html`)
 
 ## Anwendung starten
-
-1. Die Anwendung über die Hauptklasse `GhostnetfishingApplication.java` ausführen.
-2. Im Webbrowser die Adresse `http://localhost:8080` aufrufen.
+1. Den Unterordner `ghostnetfishing` in der IDE als Projekt öffnen
+2. Die Anwendung über die Hauptklasse `GhostnetfishingApplication.java` ausführen.
+3. Im Webbrowser die Adresse `http://localhost:8080` aufrufen.
 
 Beim Start werden über die Klasse `DataInitializer` automatisch drei Beispieldatensätze angelegt.
