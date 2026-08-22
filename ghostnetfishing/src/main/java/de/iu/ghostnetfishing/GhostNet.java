@@ -22,6 +22,9 @@ public class GhostNet {
     private Status status;
 
     @ManyToOne
+    private Person meldendePerson; // Optional / Nullable für anonyme Sichtungsmeldungen
+
+    @ManyToOne
     private Person bergendePerson; // Die Person, die das Netz bergen möchte (kann null sein)
 
     // Leerer Konstruktor für JPA
@@ -65,6 +68,14 @@ public class GhostNet {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Person getMeldendePerson() {
+        return meldendePerson;
+    }
+
+    public void setMeldendePerson(Person meldendePerson) {
+        this.meldendePerson = meldendePerson;
     }
 
     public Person getBergendePerson() {
